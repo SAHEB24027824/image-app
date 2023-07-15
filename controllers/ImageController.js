@@ -5,10 +5,13 @@ const AddImages = async(req,res)=>{
     let imageArray = [];
     try {
         if (!req.files || !req.body) return res.status(400).send({ success: false, message: 'Please send proper request 1' });
-        const { applicationId, categoryId, name } = req.body;
+        const { applicationId, categoryId, name ,width,height,quality} = req.body;
         for (let file of req.files) {
             let newImage = new Image();
-            const url = await ImageProcessing(file, newImage._id,);
+            const url = await ImageProcessing(file, newImage._id,{width,height,quality});
+            newImage.width = width;
+            newImage.height = height;
+            newImage.quality = quality;
             newImage.name = name;
             newImage.url = url;
             newImage.applicationId = applicationId;

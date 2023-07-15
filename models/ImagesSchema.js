@@ -17,6 +17,18 @@ const ImageSchema = new Schema({
         type: String,
         required: true
     },
+    width: {
+        type: String,
+        required: true
+    },
+    height: {
+        type: String,
+        required: true
+    },
+    quality: {
+        type: String,
+        required: true
+    },
 
 })
 const Image = models?.image || model('image', ImageSchema);

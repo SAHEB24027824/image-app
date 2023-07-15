@@ -6,12 +6,12 @@ const url = require('url');
 const directory = 'uploads';
 
 
- const ImageProcessing = async (file,id) => {
+const ImageProcessing = async (file, id, resize) => {
     return new Promise(async (resolve, reject) => {
         if (!file) {
             return reject(new Error('Check request body'));
         }
-        let imageDir = path.join(__dirname,'../', directory);
+        let imageDir = path.join(__dirname, '../', directory);
 
         fs.access(imageDir, (error) => {
             if (error) {
@@ -22,10 +22,12 @@ const directory = 'uploads';
         try {
             await sharp(file.buffer)
                 .resize({
-                    fit: 'contain',
+                    height: resize && resize?.height ? +resize?.height : 800,
+                    width: resize && resize?.width ? +resize?.width : 800,
+                    fit: sharp.fit.contain,
                     background: { r: 255, g: 255, b: 255, alpha: 0 }
                 })
-                .webp({quality:40})
+                .webp({ quality: resize && resize?.quality ? +resize?.quality : 40 })
                 .toFile(`${imageDir}/${imageName}`);
 
             let url = `/image/${imageName}`
@@ -37,17 +39,18 @@ const directory = 'uploads';
     })
 }
 
- const UnlinkImage = (imageUrl) => {
+const UnlinkImage = (imageUrl) => {
     return new Promise((resolve, reject) => {
-        const imagePath = url.parse(imageUrl, true);
-        const image = path.join(__dirname,`../assets/${imagePath.pathname}`);
-        fs.unlink(image,function(err){
-           resolve(true);
-       }); 
+        const imagePathArray = imageUrl.split('/')
+        const imageName = imagePathArray[imagePathArray?.length-1]
+        const image = path.join(__dirname, `../uploads/${imageName}`);
+        fs.unlink(image, function (err) {
+            resolve(true);
+        });
     })
 }
 
-module.exports={
-    ImageProcessing:ImageProcessing,
-    UnlinkImage:UnlinkImage
+module.exports = {
+    ImageProcessing: ImageProcessing,
+    UnlinkImage: UnlinkImage
 }
