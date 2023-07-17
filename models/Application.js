@@ -5,9 +5,17 @@ const ApplicationSchema = new Schema({
         type: String,
         required: true
     },
-    categories: [
+    key: {
+        type: String,
+        required: true
+    },
+    category: [
         {
             name: {
+                type: String,
+                required: true
+            },
+            key: {
                 type: String,
                 required: true
             }

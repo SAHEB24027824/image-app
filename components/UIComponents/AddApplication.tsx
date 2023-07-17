@@ -1,8 +1,8 @@
 'use client'
 import React, { useState } from 'react'
 import {BsPlusLg } from 'react-icons/bs';
-import ApplicationFromController from './FormControllers/ApplicationFromController';
-import Modal from './Modal';
+import ApplicationFromController from '../FormControllers/ApplicationFromController';
+import Modal from '../Modal';
 
 export default function AddApplication() {
 
@@ -17,9 +17,9 @@ export default function AddApplication() {
         <BsPlusLg/> Add new application
     </button>
 
-    <Modal title='Add Application Form' open={open} close={setOpen}>
+    {/* <Modal title='Add Application Form' open={open} close={setOpen}>
      <ApplicationFromController modalClose={setOpen}/>
-    </Modal>
+    </Modal> */}
 
     </>
    

@@ -12,16 +12,14 @@ export const AddImageService = async (formData:any)=>{
     return response.json()
 }
 
-export const GetImageService = async (applicationId?:string,categoryId?:string)=>{
-    let path='image';
-    if(applicationId && categoryId){
-        path=`${path}/${applicationId}/${categoryId}`
-    }
+export const GetImageService = async (applicationKey?:string,categoryKey?:string)=>{
+    let query = new URLSearchParams();
 
-    const response= await fetch(`${URL}/${path}`)
-        // if (!response.ok) {
-        //     throw await response.json()
-        // }
+    applicationKey && query.append('applicationKey', applicationKey)
+    categoryKey && query.append('categoryKey', categoryKey)
+    
+    const response= await fetch(`${URL}/image?` + query,{method:'GET'})
+
     return response.json()
 }
 

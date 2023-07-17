@@ -1,25 +1,26 @@
 'use client'
 import Image from 'next/image';
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import ImageUploadFormFields from '../FormFields/ImageUploadFormFields';
 import { AiFillCloseCircle } from 'react-icons/ai';
-import { ButtonAntd, FormAntd, messageAntd } from '../Antd';
+import { ButtonAntd, FormAntd, MessageAntd } from '../Antd';
 import { AddImageService } from '@/service/ImageService';
 import { MessageService } from '@/service/MessageService';
 import Spinner from '../Spinner';
 import { useRouter } from 'next/navigation';
-import { FormInstance } from 'antd';
 
 export default function ImageUploadFormController(
   { params, modalClose }:
-    { params: { ids: string[] }, modalClose: React.Dispatch<React.SetStateAction<boolean>>, }) {
+  { params: { params: string[] }, modalClose: React.Dispatch<React.SetStateAction<boolean>>, }) {
 
-  const appID = params?.ids[0]
-  const catID = params?.ids[1]
+  const applicationKey = params?.params[0]
+  const categoryKey = params?.params[1]
   const [imageFile, setImageFile] = useState<File[]>([]);
   const [imageUrls, setImageUrls] = useState<any[]>([]);
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const initialValues={width:700,height:700,quality:50};
+  const [form] = FormAntd.useForm();
 
 
 
@@ -33,6 +34,7 @@ export default function ImageUploadFormController(
     })
     setImageUrls(imageObjects)
     setImageFile(selectedFilesArray)
+    event.target.value='';
   }
 
 
@@ -85,8 +87,8 @@ export default function ImageUploadFormController(
     setLoading(true)
     try {
       const formData = new FormData()
-      formData.append('applicationId', appID);
-      formData.append('categoryId', catID);
+      formData.append('applicationKey', applicationKey);
+      formData.append('categoryKey', categoryKey);
       formData.append('name', values?.name as string);
       formData.append('width', values?.width as string);
       formData.append('height', values?.height as string);
@@ -95,14 +97,14 @@ export default function ImageUploadFormController(
         formData.append('image', item)
       })
       const response = await AddImageService(formData);
-      messageAntd.success(MessageService(response))
+      MessageAntd.success(MessageService(response))
       setImageFile([])
       setImageUrls([])
       modalClose(false)
       router.refresh();
-
+      form.resetFields()
     } catch (error: any) {
-      messageAntd.error(MessageService(error))
+      MessageAntd.error(MessageService(error))
     }
     finally {
       setTimeout(() => { setLoading(false) }, 1000)
@@ -112,7 +114,7 @@ export default function ImageUploadFormController(
 
 
   return (
-    <FormAntd className='' onFinish={submit} layout='vertical'>
+    <FormAntd form={form} onFinish={submit} layout='vertical' initialValues={initialValues}>
       <ImageUploadFormFields onLoadImages={loadImages} />
       <div className='mt-4'>
         {loadedImageContainer()}

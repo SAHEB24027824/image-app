@@ -1,6 +1,6 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
-import Sidebar from '@/components/Sidebar'
+import Sidebar from '@/components/UIComponents/Sidebar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,14 +20,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className='flex justify-between '>
-          <div className='w-[20%] max-h-[100hv] fixed top-0 bottom-0 z-50'>
-          <Sidebar />
+        <div className='flex'>
+             <div className=' w-1/5'>
+             <Sidebar />
+             </div>
+             <div className='w-4/5 bg-slate-100'>
+               {children}
+            </div>
+
           </div>
-          <div className=' ml-[20%] w-[80%] max-h-[100hv] p-4'>
-            {children}
-          </div>
-        </div>
       </body>
     </html>
   )

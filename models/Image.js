@@ -1,11 +1,11 @@
 const { Schema, model, models } = require("mongoose");
 
 const ImageSchema = new Schema({
-    applicationId: {
+    applicationKey: {
         type: String,
         required: true
     },
-    categoryId: {
+    categoryKey: {
         type: String,
         required: true
     },

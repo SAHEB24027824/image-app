@@ -1,46 +1,59 @@
 'use client'
 import { FormInstance } from 'antd';
 import React, { useEffect, useRef, useState, useTransition } from 'react'
-import { ButtonAntd, FormAntd } from '../Antd'
+import { ButtonAntd, FormAntd, MessageAntd } from '../Antd'
 import ApplicationFormFields from '../FormFields/ApplicationFormFields';
-import { AddApplicationService, GetApplicationsByIdService, UpdateApplicationService } from '@/service/ApplicationService';
+import { AddApplicationService, UpdateApplicationService } from '@/service/ApplicationService';
 import { useRouter } from 'next/navigation';
 import useSWR from 'swr';
+import Spinner from '../UIComponents/Spinner';
+import { MessageService } from '@/util/MessageService';
+import { APPLICATION_TYPE } from '@/types/type.application';
 
 
-export default function ApplicationFromController({modalClose , appId}:
-  {modalClose:React.Dispatch<React.SetStateAction<boolean>> , appId?:string}) {
+export default function ApplicationFromController({ application }: { application?: APPLICATION_TYPE }) {
 
-    const formRef = useRef<FormInstance>(null); 
-    let [isPending, startTransition] = useTransition() 
-    const router= useRouter();
-    const { data } = useSWR(appId ? ['GetAppById',appId] : null, ([url,appId])=> GetApplicationsByIdService(appId))
-    
-    useEffect(()=>{
-      if(data && Object.keys(data).length>0 && data.result){
-        formRef.current?.setFieldValue('name',data.result.name);
-        formRef.current?.setFieldValue('categories',data.result.categories);
+  const formRef = useRef<FormInstance>(null);
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const addOrUpdateAppkucation = async (values: any) => {
+    setLoading(true)
+    try {
+      let response;
+      if (application) {
+        response = await UpdateApplicationService(values)
       }
-    },[data])
+      else {
+        response = await AddApplicationService(values)
+      }
+      MessageAntd.success(MessageService(response))
+      router.refresh();
+      router.push('/');
+    } catch (error: any) {
+      MessageAntd.success(MessageService(error))
 
-    const submit = (values:any)=>{
-      if(appId){
-        values.id=appId;
-        startTransition(async()=>await UpdateApplicationService(values))
-      }
-      else{
-        startTransition(async()=>await AddApplicationService(values))
-      }
-       router.refresh()
-       modalClose(false);
     }
+    finally {
+      setLoading(false)
+    }
+  }
+
+  const submit = (values: any) => {
+    if (application) {
+      values.id = application._id
+    }
+    addOrUpdateAppkucation(values)
+  }
 
   return (
     <div>
-        <FormAntd ref={formRef} layout='vertical' onFinish={submit} >
-          <ApplicationFormFields/>
-          <ButtonAntd htmlType='submit' className='bg-blue-600' block type='primary'>{JSON.stringify(isPending)}-Save</ButtonAntd>
-        </FormAntd>
+      <FormAntd ref={formRef} layout='vertical' onFinish={submit} initialValues={application}>
+        <ApplicationFormFields form={formRef} />
+        <ButtonAntd htmlType='submit' className='bg-sky-600 flex items-center justify-center gap-1' block type='primary'>
+          <Spinner loading={loading} />{application ? 'Update' : 'Save'}
+        </ButtonAntd>
+      </FormAntd>
     </div>
   )
 }

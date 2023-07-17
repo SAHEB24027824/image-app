@@ -34,9 +34,8 @@ export const GetApplicationsService = async () => {
     return response.json()
 }
 
-export const GetApplicationsByIdService = async (id: string) => {
-    console.log('---id---', id)
-    const response = await fetch(`${URL}/application/${id}`, {
+export const GetApplicationService = async (key: string) => {
+    const response = await fetch(`${URL}/application/${key}`, {
         method: 'get',
     })
     if (!response.ok) {
