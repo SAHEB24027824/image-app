@@ -22,6 +22,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className='flex'>
              <div className=' w-1/5'>
+              {/* @ts-ignore */}
              <Sidebar />
              </div>
              <div className='w-4/5 bg-slate-100'>

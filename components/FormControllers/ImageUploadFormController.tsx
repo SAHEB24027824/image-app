@@ -5,9 +5,9 @@ import ImageUploadFormFields from '../FormFields/ImageUploadFormFields';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { ButtonAntd, FormAntd, MessageAntd } from '../Antd';
 import { AddImageService } from '@/service/ImageService';
-import { MessageService } from '@/service/MessageService';
-import Spinner from '../Spinner';
+import { MessageService } from '@/util/MessageService';
 import { useRouter } from 'next/navigation';
+import Spinner from '../UIComponents/Spinner';
 
 export default function ImageUploadFormController(
   { params, modalClose }:
@@ -119,7 +119,8 @@ export default function ImageUploadFormController(
       <div className='mt-4'>
         {loadedImageContainer()}
       </div>
-      <ButtonAntd htmlType='submit' disabled={imageUrls.length < 1} block type='primary' className='bg-blue-600 mt-4'>
+      <ButtonAntd htmlType='submit' disabled={imageUrls.length < 1} block type='primary' 
+      className='bg-blue-600 mt-4 flex items-center justify-center gap-2'>
         <Spinner loading={loading} /> Upload</ButtonAntd>
     </FormAntd>
   )

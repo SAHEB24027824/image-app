@@ -1,14 +1,14 @@
 const { Image } = require("../models/Image");
-const {ImageProcessing, UnlinkImage} = require('../util/ImageProcessing')
+const { ImageProcessing, UnlinkImage } = require('../util/ImageProcessing')
 
-const AddImages = async(req,res)=>{
+const AddImages = async (req, res) => {
     let imageArray = [];
     try {
         if (!req.files || !req.body) return res.status(400).send({ success: false, message: 'Please send proper request 1' });
-        const { applicationKey, categoryKey, name ,width,height,quality} = req.body;
+        const { applicationKey, categoryKey, name, width, height, quality } = req.body;
         for (let file of req.files) {
             let newImage = new Image();
-            const url = await ImageProcessing(file, newImage._id,{width,height,quality});
+            const url = await ImageProcessing(file, newImage._id, { width, height, quality });
             newImage.width = width;
             newImage.height = height;
             newImage.quality = quality;
@@ -27,32 +27,68 @@ const AddImages = async(req,res)=>{
         }
 
     } catch (error) {
-        for(let image of imageArray){
+        for (let image of imageArray) {
             UnlinkImage(image.url)
         }
         return res.status(500).send({ success: false, message: error.message });
     }
 }
 
-const getImages = async(req,res)=>{
+const getImages = async (req, res) => {
     try {
-    const { applicationKey, categoryKey } = req.query;  
-    let query = {};
-    if(applicationKey || categoryKey){
-        applicationKey && (Object.keys(query).length>0 ? query = {...query,applicationKey:applicationKey} :  query ={applicationKey:applicationKey})
-        categoryKey && (Object.keys(query).length>0 ? query = {...query,categoryKey:categoryKey} :  query ={categoryKey:categoryKey})
-    }
-    const images = await Image.find(query);
-    
-    if(images && images.length>0) return res.status(200).send({success:true , result:images, message:'Images found',query });
-    return res.status(404).send({ success: false, message: 'Images not found!' }); 
-        
+        let { applicationKey, categoryKey, searchText } = req.query;
+        let query = {};
+
+        //=======OR Conditions===========//
+        if (searchText) {
+            let orQuery = []
+            if (searchText && searchText.match(/^ *$/) == null) {
+                searchText = searchText.trim()
+                let searchTextArray = searchText.split(' ')
+                searchTextArray = searchTextArray.map((text) => `${text}`)
+                let regex = new RegExp(searchTextArray.join("|"), "gi");
+
+                orQuery.push({ name: { $regex: regex } });
+                orQuery.push({ width: { $regex: regex } });
+                orQuery.push({ height: { $regex: regex } });
+                orQuery.push({ quality: { $regex: regex } });
+                orQuery.push({ url: { $regex: regex } });
+
+            }
+            query = { $or: orQuery };
+        }
+
+        //========AND Conditions=============//
+        if (applicationKey || categoryKey) {
+            applicationKey && (Object.keys(query).length > 0 ? query = { ...query, applicationKey: applicationKey } : query = { applicationKey: applicationKey })
+            categoryKey && (Object.keys(query).length > 0 ? query = { ...query, categoryKey: categoryKey } : query = { categoryKey: categoryKey })
+        }
+        const result = await Image.find(query);
+
+        if (result && result.length > 0) return res.status(200).send({ success: true, result, message: 'Images found', query });
+        return res.status(404).send({ success: false, message: 'Images not found!' });
+
     } catch (error) {
-        return res.status(500).send({ success: false, message: error.message }); 
+        return res.status(500).send({ success: false, message: error.message });
     }
 }
 
-module.exports={
-    AddImages:AddImages,
-    getImages:getImages
+
+const deleteImage = async (req, res) => {
+    try {
+        let { id } = req.params;
+        let image = await Image.findOne({_id:id})
+        const result = await Image.deleteOne({_id:id});
+        UnlinkImage(image?.url)
+        if (result) return res.status(200).send({ success: true, result, message: 'Images Deleted' });
+
+    } catch (error) {
+        return res.status(500).send({ success: false, message: error.message });
+    }
+}
+
+module.exports = {
+    AddImages: AddImages,
+    getImages: getImages,
+    deleteImage:deleteImage
 }

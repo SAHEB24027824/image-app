@@ -1,4 +1,4 @@
-import ImageGrid from '@/components/ImageGrid';
+import ImageGrid from '@/components/UIComponents/ImageGrid';
 import { GetImageService } from '@/service/ImageService';
 export const dynamic = 'force-dynamic';
 

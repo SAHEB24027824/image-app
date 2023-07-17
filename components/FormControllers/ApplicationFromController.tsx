@@ -1,14 +1,14 @@
 'use client'
 import { FormInstance } from 'antd';
-import React, { useEffect, useRef, useState, useTransition } from 'react'
+import React, { useRef, useState } from 'react'
 import { ButtonAntd, FormAntd, MessageAntd } from '../Antd'
 import ApplicationFormFields from '../FormFields/ApplicationFormFields';
 import { AddApplicationService, UpdateApplicationService } from '@/service/ApplicationService';
 import { useRouter } from 'next/navigation';
-import useSWR from 'swr';
 import Spinner from '../UIComponents/Spinner';
 import { MessageService } from '@/util/MessageService';
 import { APPLICATION_TYPE } from '@/types/type.application';
+import {RiAlertFill} from 'react-icons/ri'
 
 
 export default function ApplicationFromController({ application }: { application?: APPLICATION_TYPE }) {
@@ -48,6 +48,17 @@ export default function ApplicationFromController({ application }: { application
 
   return (
     <div>
+      {
+        application &&
+        <div className='text-rose-500 flex items-center gap-1 text-sm mb-6 font-semibold'>
+           <RiAlertFill className='animate-bounce text-lg'/>
+           <span>Dont change the extiting category name it will change the key , which will break image fetch for that perticular category.</span>
+        </div>
+
+      }
+      <div>
+     
+      </div>
       <FormAntd ref={formRef} layout='vertical' onFinish={submit} initialValues={application}>
         <ApplicationFormFields form={formRef} />
         <ButtonAntd htmlType='submit' className='bg-sky-600 flex items-center justify-center gap-1' block type='primary'>

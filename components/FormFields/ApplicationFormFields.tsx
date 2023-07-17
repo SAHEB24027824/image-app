@@ -32,7 +32,7 @@ export default function ApplicationFormFields(
                           <InputAntd onChange={(e) => form?.current?.setFieldValue(['category', name, 'key'], formatSlugAndKey(e?.target?.value))} />
                         </FormAntd.Item>
                         <FormAntd.Item label='key' name={[name, 'key']} rules={[{ required: true, message: 'Category key is required' }]} className='w-full'>
-                          <InputAntd />
+                          <InputAntd readOnly/>
                         </FormAntd.Item>
                         <FormAntd.Item label=' '>
 
