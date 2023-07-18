@@ -52,7 +52,7 @@ export default function ApplicationFromController({ application }: { application
         application &&
         <div className='text-rose-500 flex items-center gap-1 text-sm mb-6 font-semibold'>
            <RiAlertFill className='animate-bounce text-lg'/>
-           <span>Don't change the extiting category name it will change the key , which will break image fetch for that perticular category.</span>
+           <span>{`Don't change the extiting category name it will change the key , which will break image fetch for that perticular category.`}</span>
         </div>
 
       }

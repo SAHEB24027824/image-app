@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 8080;
 
 const route = require('./router/appRouter');
 const bodyParser = require('body-parser');
+require('dotenv').config()
 
 
 app.prepare()
@@ -20,7 +21,7 @@ app.prepare()
         server.use('/image',express.static(__dirname+'/uploads'));
         server.use('/api',route);
 
-        server.get('*', (req, res) => {
+        server.all('*', (req, res) => {
             return handle(req, res)
         })
 

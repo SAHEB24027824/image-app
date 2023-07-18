@@ -16,11 +16,11 @@ export default function SidebarItems({ applications }: { applications: APPLICATI
     <>
 
       {
-        applications && applications.map((app: APPLICATION_TYPE, i: number) => {
+        applications && [...applications,...applications,...applications].map((app: APPLICATION_TYPE, i: number) => {
           return (
             <div className='p-2' key={i}>
-              <div className='flex items-center justify-between gap-4 mt-6 font-bold text-2xl'>
 
+              <div className='flex items-center justify-between gap-4 mt-6 font-bold text-2xl'>
                 <span className='text-sky-500'>{app.name}</span>
                 <PopoverAntd content={
                   <Link href={`/application/${app.key}`} className=' cursor-pointer p-2 hover:bg-slate-300'>Edit</Link>
@@ -41,8 +41,8 @@ export default function SidebarItems({ applications }: { applications: APPLICATI
                   })
                 }
               </div>
-
             </div>
+
           )
         })
       }
