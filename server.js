@@ -8,13 +8,15 @@ const PORT = process.env.PORT || 8080;
 
 const route = require('./router/appRouter');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+
 require('dotenv').config()
 
 
 app.prepare()
     .then(() => {
         const server = express();
-
+        // server.use(cors({credentials:true}))
         server.use(bodyParser.json());
         server.use(bodyParser.urlencoded({extended:false}));
 

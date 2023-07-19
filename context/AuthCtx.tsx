@@ -5,14 +5,14 @@ import { MessageService } from '@/util/MessageService';
 import { useRouter, useParams, usePathname } from 'next/navigation';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-function getCookie(cookieName: any) {
+export function getCookie(cookieName: any) {
     return new Promise((resolve, reject) => {
         let cookie = {};
         let cookieArray = document.cookie.split(';');
         cookieArray.forEach(cookie => {
             let [key, value] = cookie.split('=');
             if (key.trim() == cookieName) {
-                resolve(true)
+                resolve(`${key}=${value}`)
             }
             else {
                 reject(false)

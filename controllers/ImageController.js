@@ -66,7 +66,7 @@ const getImages = async (req, res) => {
         const result = await Image.find(query);
 
         if (result && result.length > 0) return res.status(200).send({ success: true, result, message: 'Images found', query });
-        return res.status(404).send({ success: false, message: 'Images not found!' });
+        return res.status(200).send({ success: false, message: 'Images not found!' });
 
     } catch (error) {
         return res.status(500).send({ success: false, message: error.message });

@@ -3,10 +3,12 @@ import SidebarItems from './SidebarItems';
 import { GetApplicationsService } from '@/service/ApplicationService';
 import SidebarActions from './SidebarActions';
 import SidebarHeader from './SidebarHeader';
+import { GetCookie } from '@/util/cookie';
 export const dynamic = 'force-dynamic';
 
 export default async function Sidebar() {
-  const applicationResponse = await GetApplicationsService()
+  const cookie = GetCookie()
+  const applicationResponse = await GetApplicationsService(cookie)
   const applications = await applicationResponse?.result;
 
   return (

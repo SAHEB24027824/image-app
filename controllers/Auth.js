@@ -16,7 +16,7 @@ const signUp = async (req, res) => {
         const user = await newUserData.save();
         if (!user) return res.status(400).send({ success: false, message: 'Unable to create user' })
 
-        let token = await jwt.sign({ id: user._id, name: user.name, email: user.email }, 'need_to_moved_to_dotenv');
+        let token = await jwt.sign({ id: user._id, name: user.name, email: user.email }, process.env.JWT_SECRET);
         res.cookie(process.env.NEXT_PUBLIC_AUTH_COOKIE_NAME, token,{domain:process.env.AUTH_DOMAIN});
         res.status(200).send({ success: true, message: 'User created' })
 
@@ -37,7 +37,7 @@ const login = async (req, res) => {
         let isSamePassword = await bcrypt.compare(password,user.password);
         if (!isSamePassword) return res.status(400).send({ success: false, message: 'Invalid email or password' })
 
-        let token = await jwt.sign({ id: user._id, name: user.name, email: user.email }, 'need_to_moved_to_dotenv');
+        let token = await jwt.sign({ id: user._id, name: user.name, email: user.email }, process.env.JWT_SECRET);
 
         res.cookie(process.env.NEXT_PUBLIC_AUTH_COOKIE_NAME, token,{domain:process.env.AUTH_DOMAIN});
         res.status(200).send({ success: true, message: 'Successfully logged in' })

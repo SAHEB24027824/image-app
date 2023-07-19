@@ -2,12 +2,14 @@ import ApplicationFromController from '@/components/FormControllers/ApplicationF
 import Card from '@/components/UIComponents/Card';
 import { GetApplicationService } from '@/service/ApplicationService';
 import { APPLICATION_TYPE } from '@/types/type.application';
+import { GetCookie } from '@/util/cookie';
 import Link from 'next/link';
 import React from 'react'
 export const dynamic = 'force-dynamic';
 
 export default async function ApplicationEditPage({params}:{params:{key:string}}) {
-   const response = await GetApplicationService(params.key);
+   const cookie = GetCookie()
+   const response = await GetApplicationService(params.key,cookie);
    const application:APPLICATION_TYPE = response.result;
   return (
     <div>

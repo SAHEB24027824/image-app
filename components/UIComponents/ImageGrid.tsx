@@ -61,6 +61,10 @@ export default function ImageGrid(
     getAllImages()
   }, [searchText])
 
+  useEffect(()=>{
+    setImagesData(images)
+  },[images])
+
 
 
 

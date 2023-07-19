@@ -16,7 +16,7 @@ export default function SidebarItems({ applications }: { applications: APPLICATI
     <>
 
       {
-        applications && [...applications,...applications,...applications].map((app: APPLICATION_TYPE, i: number) => {
+        applications && applications.map((app: APPLICATION_TYPE, i: number) => {
           return (
             <div className='p-2' key={i}>
 

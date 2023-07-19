@@ -1,3 +1,5 @@
+import { ResponseHandler } from "@/util/RequestResponseHandler"
+
 const URL = "http://localhost:8080/api"
 
 export const Login = async (data: any) => {
@@ -6,19 +8,16 @@ export const Login = async (data: any) => {
         body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" }
     })
-    if (!response.ok) {
-        throw await response.json()
-    }
-    return response.json()
+    const result  = await ResponseHandler(response)
+    return result
 }
 
 
 export const Logout = async () => {
     const response = await fetch(`${URL}/logout`, {
         method: 'get',
+        credentials: 'include'
     })
-    if (!response.ok) {
-        throw await response.json()
-    }
-    return response.json()
+    const result  = await ResponseHandler(response)
+    return result
 }
