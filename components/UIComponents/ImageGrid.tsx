@@ -95,15 +95,15 @@ export default function ImageGrid(
       
       {
         imagesData && imagesData.length > 0 &&
-        <div className='flex flex-wrap  items-center gap-2 overflow-hidden '>
+        <div className='flex flex-wrap  items-center gap-4 overflow-hidden justify-center md:justify-start w-full md:w-[90%] m-auto'>
           {imagesData.map((image, index) => {
             return (
               <div key={index} className='shadow-md duration-300 rounded-md hover:shadow-slate-700 relative'>
 
 
                 <Image src={`${process.env.NEXT_PUBLIC_APP_URL}${image.url}`}
-                  height={120}
-                  width={140}
+                  height={100}
+                  width={120}
                   alt={image.name}
                   className='cursor-pointer block m-auto'
                   onClick={() => copyToClipboard(`${process.env.NEXT_PUBLIC_APP_URL}${image.url}`)}

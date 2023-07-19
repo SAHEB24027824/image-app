@@ -1,6 +1,7 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
 import AuthContextProvider from '@/context/AuthCtx';
+import Sidebar from '@/components/UIComponents/Sidebar';
 const inter = Inter({ subsets: ['latin'] })
 export const dynamic = 'force-dynamic';
 
@@ -19,8 +20,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} bg-slate-200`}>
         <AuthContextProvider>
-               {children}
-          </AuthContextProvider>
+          {children}
+        </AuthContextProvider>
       </body>
     </html>
   )

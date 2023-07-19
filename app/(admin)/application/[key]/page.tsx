@@ -15,7 +15,7 @@ export default async function ApplicationEditPage({params}:{params:{key:string}}
     <div>
       <Card title='Edit Application'
       extra={<Link href='/' prefetch={false}>Back</Link>}
-      className='my-10 w-[60%] m-auto'>
+      className='my-10 w-[90%] md:w-[60%] m-auto'>
         <ApplicationFromController application={application}/>
       </Card>
     </div>

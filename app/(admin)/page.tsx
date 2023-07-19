@@ -14,7 +14,7 @@ export default async function HomePage() {
 
          <span>GALLERY</span>
 
-        <Image src={'/me.png'} alt='me' width={500} height={100}
+        <Image src={'/me.png'} alt='me' width={500} height={200}
          className=' absolute -top-[185px] -right-[205px]'
         />
          </div>
