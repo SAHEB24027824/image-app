@@ -8,25 +8,25 @@ export default function ImageUploadFormFields({ onLoadImages }: { onLoadImages: 
 
   return (
     <>
-     <FormAntd.Item name='name' label='Name' rules={[{required:true}]}>
-      <InputAntd />
+     <FormAntd.Item name='name' label='Image Name' rules={[{required:true}]}>
+      <InputAntd placeholder='Image Name'/>
      </FormAntd.Item>
 
-     <FormAntd.Item name='resizeOption' label='Resize Option' rules={[{required:true}]}>
+     <FormAntd.Item name='resizeOption' label='Select Image Resize Option' rules={[{required:true}]}>
       <SelectAntd options={DefaultImageResizeTypes} placeholder='Select Image resize type'/>
      </FormAntd.Item>
      
      <div className='flex gap-1 items-center'>
 
-     <FormAntd.Item name='width' label='Width' rules={[{required:true}]}>
+     <FormAntd.Item name='width' label='Image Width' rules={[{required:true}]}>
       <InputNumberAntd  min={0} className='w-full' />
      </FormAntd.Item>
 
-     <FormAntd.Item name='height' label='Height' rules={[{required:true}]}>
+     <FormAntd.Item name='height' label='Image Height' rules={[{required:true}]}>
       <InputNumberAntd  min={0} className='w-full' />
      </FormAntd.Item>
 
-     <FormAntd.Item name='quality' label='Quality' rules={[{required:true}]}>
+     <FormAntd.Item name='quality' label='Image Quality' rules={[{required:true}]}>
       <InputNumberAntd min={0} max={100} className='w-full'/>
      </FormAntd.Item>
 
