@@ -8,6 +8,7 @@ import { AddImageService } from '@/service/ImageService';
 import { MessageService } from '@/util/MessageService';
 import { useRouter } from 'next/navigation';
 import Spinner from '../UIComponents/Spinner';
+import {BsFillBookmarkCheckFill} from 'react-icons/bs'
 
 export default function ImageUploadFormController(
   { params, modalClose }:
@@ -93,6 +94,7 @@ export default function ImageUploadFormController(
       formData.append('width', values?.width as string);
       formData.append('height', values?.height as string);
       formData.append('quality', values?.quality as string);
+      formData.append('resizeOption', values?.resizeOption as string);
       imageFile.forEach(item => {
         formData.append('image', item)
       })
@@ -115,6 +117,20 @@ export default function ImageUploadFormController(
 
   return (
     <FormAntd form={form} onFinish={submit} layout='vertical' initialValues={initialValues}>
+      <div className='my-4 p-2 bg-blue-500 text-white text-xs flex flex-col gap-1'>
+        <span className='flex gap-1 items-start'>
+        <BsFillBookmarkCheckFill/><span>Resize option Fill is the best option to select</span>
+        </span>
+        <span className='flex gap-1 items-start'>
+        <BsFillBookmarkCheckFill/><span>Make sure you set proper height and width</span>
+        </span>
+        <span className='flex gap-1 items-start'>
+        <BsFillBookmarkCheckFill/><span>For Banner , NEWS preferred Height:400 and Width:800</span>
+        </span>
+        <span className='flex gap-1 items-start'>
+        <BsFillBookmarkCheckFill/><span>For Product preferred Height:700 and Width:700, height and width will be equal</span>
+        </span>
+      </div>
       <ImageUploadFormFields onLoadImages={loadImages} />
       <div className='mt-4'>
         {loadedImageContainer()}

@@ -7,4 +7,5 @@ export interface IMAGE_TYPE{
     url: string,
     applicationId: string,
     categoryId: string,
+    resizeOption:string
 }

@@ -29,6 +29,10 @@ const ImageSchema = new Schema({
         type: String,
         required: true
     },
+    resizeOption:{
+        type: String,
+        required: true
+    }
 
 })
 const Image = models?.image || model('image', ImageSchema);

@@ -24,7 +24,7 @@ const ImageProcessing = async (file, id, resize) => {
                 .resize({
                     height: resize && resize?.height ? +resize?.height : 800,
                     width: resize && resize?.width ? +resize?.width : 800,
-                    fit: sharp.fit.contain,
+                    fit: resize.resizeOption,
                     background: { r: 255, g: 255, b: 255, alpha: 0 }
                 })
                 .webp({ quality: resize && resize?.quality ? +resize?.quality : 40 })

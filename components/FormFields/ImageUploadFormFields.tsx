@@ -1,10 +1,8 @@
 'use client'
-import React, { useState } from 'react'
-import { AiOutlineUpload } from 'react-icons/ai'
-import { BsCloudUploadFill } from 'react-icons/bs'
+import { DefaultImageResizeTypes } from '@/store/Default'
+import React from 'react'
 import { FaUpload } from 'react-icons/fa'
-import { MdOutlineDriveFolderUpload } from 'react-icons/md'
-import { ButtonAntd, FormAntd, InputAntd, InputNumberAntd } from '../Antd'
+import {  FormAntd, InputAntd, InputNumberAntd, SelectAntd } from '../Antd'
 
 export default function ImageUploadFormFields({ onLoadImages }: { onLoadImages: (event: React.ChangeEvent<HTMLInputElement>) => void }) {
 
@@ -13,6 +11,11 @@ export default function ImageUploadFormFields({ onLoadImages }: { onLoadImages: 
      <FormAntd.Item name='name' label='Name' rules={[{required:true}]}>
       <InputAntd />
      </FormAntd.Item>
+
+     <FormAntd.Item name='resizeOption' label='Resize Option' rules={[{required:true}]}>
+      <SelectAntd options={DefaultImageResizeTypes} placeholder='Select Image resize type'/>
+     </FormAntd.Item>
+     
      <div className='flex gap-1 items-center'>
 
      <FormAntd.Item name='width' label='Width' rules={[{required:true}]}>

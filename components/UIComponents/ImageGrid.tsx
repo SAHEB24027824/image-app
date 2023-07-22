@@ -114,9 +114,10 @@ export default function ImageGrid(
 
 
                 <p className='bg-sky-500 text-white text-[10px] p-2 flex flex-wrap justify-center  items-center gap-2'>
-                  <span>Height: {image?.height}</span>
-                  <span>Width: {image?.width}</span>
-                  <span>Quality: {image?.quality}</span>
+                  <span>H: {image?.height}</span>
+                  <span>W: {image?.width}</span>
+                  <span>Q: {image?.quality}</span>
+                  <span>T: {image?.resizeOption}</span>
                 </p>
 
                 {enableDelete &&
