@@ -43,7 +43,7 @@ const UnlinkImage = (imageUrl) => {
     return new Promise((resolve, reject) => {
         const imagePathArray = imageUrl.split('/')
         const imageName = imagePathArray[imagePathArray?.length-1]
-        const image = path.join(__dirname, `../uploads/${imageName}`);
+        const image = path.join(__dirname, `../${directory}/${imageName}`);
         fs.unlink(image, function (error) {
             if(error) return reject(false)
             return resolve(true);

@@ -1,4 +1,5 @@
 import Sidebar from '@/components/UIComponents/Sidebar'
+import Topbar from '@/components/UIComponents/Topbar';
 import { GetApplicationsService } from '@/service/ApplicationService';
 import { APPLICATION_TYPE } from '@/types/type.application';
 import { GetCookie } from '@/util/cookie';
@@ -14,6 +15,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         <div className='bg-slate-100 flex'>
                 <Sidebar applications={applications}/>
             <div className='w-full bg-slate-100 max-h-screen overflow-y-auto'>
+                <Topbar/>
                 {children}
             </div>
         </div>

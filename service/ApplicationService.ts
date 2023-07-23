@@ -24,8 +24,8 @@ export const UpdateApplicationService = async (data: any) => {
     return result
 }
 
-export const GetApplicationsService = async (cookie:string) => {
-        const response = await fetch(`${URL}/application`,{method:'GET',headers:{cookie:cookie}})
+export const GetApplicationsService = async (cookie?:string) => {
+        const response = await fetch(`${URL}/application`,{method:'GET', credentials: 'include',headers:{cookie:cookie?cookie:''}})
         const result  = await ResponseHandler(response)
         return result
 
