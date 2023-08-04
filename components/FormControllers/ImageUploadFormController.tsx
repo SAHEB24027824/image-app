@@ -20,7 +20,7 @@ export default function ImageUploadFormController(
   const [imageUrls, setImageUrls] = useState<any[]>([]);
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-  const initialValues={width:700,height:700,quality:50,resizeOption:'fill'};
+  const initialValues={width:400,height:400,quality:50,resizeOption:'fill'};
   const [form] = FormAntd.useForm();
 
 
@@ -120,17 +120,12 @@ export default function ImageUploadFormController(
 
 
       <div className='my-4 p-2 bg-blue-500 text-white text-xs flex flex-col gap-2'>
+
         <span className='flex gap-1 items-center'>
-        <BsFillBookmarkCheckFill/><span>Resize option Fill is the best option to select</span>
+        <BsFillBookmarkCheckFill/><span> Banner , NEWS Resize:Fill, Height:400, Width:800</span>
         </span>
         <span className='flex gap-1 items-center'>
-        <BsFillBookmarkCheckFill/><span>Make sure you set proper height and width</span>
-        </span>
-        <span className='flex gap-1 items-center'>
-        <BsFillBookmarkCheckFill/><span>For Banner , NEWS preferred Height:400 and Width:800</span>
-        </span>
-        <span className='flex gap-1 items-center'>
-        <BsFillBookmarkCheckFill/><span>For Product preferred Height:700 and Width:700, equal height and width</span>
+        <BsFillBookmarkCheckFill/><span> Product deals Resize:Contain, Height:400 , Width:400, equal height and width</span>
         </span>
       </div>
 

@@ -36,3 +36,4 @@ app.prepare()
     .catch((ex) => {
         process.exit(1)
     })
+    

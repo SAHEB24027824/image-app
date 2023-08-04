@@ -112,7 +112,6 @@ export default function BackupStatus() {
 
   return (
     <div className='flex flex-col h-full items-center gap-2 pb-4'>
-      
       <ButtonAntd type='primary' className='bg-slate-500 flex items-center justify-center gap-2'
         onClick={() => TakeImageBackup()}
       >
