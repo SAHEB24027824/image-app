@@ -4,21 +4,17 @@ const User = require('../models/User');
 
 const signUp = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
-        const existingUser = await User.findOne({});
-        if (existingUser) return res.status(400).send({ success: false, message: 'User already exists, signup not allowed' })
-
-        let newUserData = new User({
-            name,
-            email,
-            password: await bcrypt.hash(password, 10),
-        })
-        const user = await newUserData.save();
+        let { name, email, password,key } = req.body;
+        if(!key || key != process.env.AUTH_KEY){
+            return res.status(401).send({ success: false, message: 'Permission denied' })
+        }
+        password =  await bcrypt.hash(password, 10);
+        const user = await User.updateOne({},{$set: {name, email, password}},{upsert:true});
         if (!user) return res.status(400).send({ success: false, message: 'Unable to create user' })
 
         let token = await jwt.sign({ id: user._id, name: user.name, email: user.email }, process.env.JWT_SECRET);
         res.cookie(process.env.NEXT_PUBLIC_AUTH_COOKIE_NAME, token,{domain:process.env.AUTH_DOMAIN});
-        res.status(200).send({ success: true, message: 'User created' })
+        res.status(200).send({ success: true, message: 'User Updated' })
 
     } catch (error) {
         return res.status(500).send({ success: false, message: error.message });

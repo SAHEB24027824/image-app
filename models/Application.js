@@ -21,7 +21,7 @@ const ApplicationSchema = new Schema({
             }
         }
     ]
-})
+},{ collection : 'applications' })
 const Application = models?.application || model('application', ApplicationSchema);
 
 module.exports = {

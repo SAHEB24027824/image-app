@@ -34,7 +34,7 @@ const ImageSchema = new Schema({
         required: true
     }
 
-})
+},{ collection : 'images' })
 const Image = models?.image || model('image', ImageSchema);
 
 module.exports = {
