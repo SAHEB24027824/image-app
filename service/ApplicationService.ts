@@ -1,6 +1,6 @@
 import {ResponseHandler } from "@/util/RequestResponseHandler"
 
-const URL = "http://localhost:8080/api"
+const URL = process.env.NEXT_PUBLIC_APP_API_URL
 
 export const AddApplicationService = async (data: any) => {
     const response = await fetch(`${URL}/application`, {
