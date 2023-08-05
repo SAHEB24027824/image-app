@@ -1,6 +1,7 @@
 import BackupStatus from '@/components/Backup/BackupStatus'
 import React from 'react'
 import { LuDatabaseBackup } from 'react-icons/lu'
+export const dynamic = "force-dynamic";
 
 export default function BackupPage() {
   return (
