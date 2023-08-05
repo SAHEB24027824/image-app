@@ -9,6 +9,7 @@ import Spinner from '../UIComponents/Spinner';
 import { MessageService } from '@/util/MessageService';
 import { APPLICATION_TYPE } from '@/types/type.application';
 import {RiAlertFill} from 'react-icons/ri'
+import { getClientCookie } from '@/util/ClientCookie';
 
 
 export default function ApplicationFromController({ application }: { application?: APPLICATION_TYPE }) {
@@ -16,6 +17,7 @@ export default function ApplicationFromController({ application }: { application
   const formRef = useRef<FormInstance>(null);
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false)
+  const cookie  = getClientCookie()
 
   const addOrUpdateAppkucation = async (values: any) => {
     setLoading(true)

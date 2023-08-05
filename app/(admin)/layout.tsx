@@ -2,19 +2,13 @@ import Sidebar from '@/components/UIComponents/Sidebar'
 import Topbar from '@/components/UIComponents/Topbar';
 import { GetApplicationsService } from '@/service/ApplicationService';
 import { APPLICATION_TYPE } from '@/types/type.application';
-import { GetCookie } from '@/util/cookie';
+import { getServerCookie } from '@/util/ServerCookie';
 import React from 'react'
 export const dynamic = "force-dynamic";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-    try {
-
-        const URL = process.env.NEXT_PUBLIC_APP_API_URL
-
-        const cookie = GetCookie()
-       // const applicationResponse = await GetApplicationsService(cookie)
-        const response  = await fetch(`${URL}/application`,{method:'GET', credentials: 'include',headers:{cookie:cookie?cookie:''}})
-        const applicationResponse = await response.json()
+        const cookie = getServerCookie()
+        const applicationResponse = await GetApplicationsService(cookie)
         const applications: APPLICATION_TYPE[] = await applicationResponse?.result;
 
         return (
@@ -27,10 +21,5 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             </div>
 
         )
-    }
-    catch (error) {
-        console.log("========ERROR==========")
-        console.log(error)
-        //throw error;
-    }
+    
 }

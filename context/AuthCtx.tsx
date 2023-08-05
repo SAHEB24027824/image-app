@@ -1,25 +1,11 @@
 'use client'
 import { MessageAntd } from '@/components/Antd';
 import { Login, Logout } from '@/service/Auth';
+import { getClientCookie } from '@/util/ClientCookie';
 import { MessageService } from '@/util/MessageService';
 import { useRouter, useParams, usePathname } from 'next/navigation';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-export function getCookie(cookieName: any) {
-    return new Promise((resolve, reject) => {
-        let cookie = {};
-        let cookieArray = document.cookie.split(';');
-        cookieArray.forEach(cookie => {
-            let [key, value] = cookie.split('=');
-            if (key.trim() == cookieName) {
-                resolve(`${key}=${value}`)
-            }
-            else {
-                reject(false)
-            }
-        })
-    })
-}
 
 const authContext = createContext<
     {
@@ -36,11 +22,11 @@ export default function AuthContextProvider({ children }: { children: React.Reac
     const router = useRouter();
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
     const path = usePathname()
+    const cookie = getClientCookie()
 
     const authCheck = async () => {
         try {
-            const isCookie = await getCookie(process.env.NEXT_PUBLIC_AUTH_COOKIE_NAME)
-            if (isCookie) {
+            if (cookie) {
                 setIsLoggedIn(true)
                 if (path.includes('/login')) {
                     router.push('/')

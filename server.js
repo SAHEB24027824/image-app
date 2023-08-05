@@ -9,6 +9,8 @@ const PORT = process.env.PORT || 3000;
 const route = require('./router/appRouter');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+
 
 require('dotenv').config()
 
@@ -19,7 +21,7 @@ app.prepare()
         server.use(cors())
         server.use(bodyParser.json());
         server.use(bodyParser.urlencoded({extended:false}));
-
+        server.use(cookieParser())
         server.use('/image',express.static(__dirname+'/uploads'));
         server.use('/api',route);
 

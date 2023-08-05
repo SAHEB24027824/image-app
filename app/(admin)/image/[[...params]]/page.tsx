@@ -3,11 +3,11 @@ import ImageUploader from '@/components/ImageUploader'
 import Card from '@/components/UIComponents/Card';
 import { GetImageService } from '@/service/ImageService';
 import React from 'react';
-import { GetCookie } from '@/util/cookie';
+import { getServerCookie } from '@/util/ServerCookie';
 export const dynamic = 'force-dynamic';
 
 export default async function AllImagePage({ params }: { params: { params: string[] } }) {
-  const cookie = GetCookie()
+  const cookie = getServerCookie()
   const applicationKey = params?.params[0];
   const categoryKey = params?.params[1];
   const response = await GetImageService({applicationKey ,categoryKey,cookie});
