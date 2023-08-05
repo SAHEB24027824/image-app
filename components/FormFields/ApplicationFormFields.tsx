@@ -15,7 +15,7 @@ export default function ApplicationFormFields(
           <InputAntd onChange={(e) => form?.current?.setFieldValue('key', formatSlugAndKey(e?.target?.value))} />
         </FormAntd.Item>
         <FormAntd.Item name='key' label='Key' rules={[{ required: true, message: 'Application Key is required.' }]}>
-          <InputAntd />
+          <InputAntd readOnly={true}/>
         </FormAntd.Item>
       </div>
       <DividerAntd>Category</DividerAntd>
