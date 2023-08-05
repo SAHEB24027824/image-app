@@ -8,8 +8,13 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
     try {
+
+        const URL = process.env.NEXT_PUBLIC_APP_API_URL
+
         const cookie = GetCookie()
-        const applicationResponse = await GetApplicationsService(cookie)
+       // const applicationResponse = await GetApplicationsService(cookie)
+        const response  = await fetch(`${URL}/application`,{method:'GET', credentials: 'include',headers:{cookie:cookie?cookie:''}})
+        const applicationResponse = await response.json()
         const applications: APPLICATION_TYPE[] = await applicationResponse?.result;
 
         return (
