@@ -24,6 +24,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         )
     }
     catch (error) {
+        console.log("========ERROR==========")
+        console.log(error)
         //throw error;
     }
 }
