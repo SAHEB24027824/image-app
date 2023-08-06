@@ -6,6 +6,7 @@ const AuthCheck = async(req,res,next)=>{
          let token = cookie
           let payload = await jwt.verify(token,process.env.JWT_SECRET)
         if(payload){
+            req.userID=payload.id;
             next()
         }
         else{

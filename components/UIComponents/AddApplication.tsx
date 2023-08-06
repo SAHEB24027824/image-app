@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import {BsPlusLg } from 'react-icons/bs';
 import ApplicationFromController from '../FormControllers/ApplicationFromController';
-import Modal from '../Modal';
+import Modal from './Modal';
 
 export default function AddApplication() {
 

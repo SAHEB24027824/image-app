@@ -1,7 +1,7 @@
 'use client'
 import { MessageAntd } from '@/components/Antd';
-import { Login, Logout } from '@/service/Auth';
-import { getClientCookie } from '@/util/ClientCookie';
+import { getUserService, LoginService, LogoutService } from '@/service/AuthService';
+import { USER_TYPE } from '@/types/type.user';
 import { MessageService } from '@/util/MessageService';
 import { useRouter, useParams, usePathname } from 'next/navigation';
 import React, { createContext, useContext, useEffect, useState } from 'react';
@@ -9,60 +9,66 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const authContext = createContext<
     {
-        isLoggedIn: boolean,
         LoginFn: (values: any) => void
-        LogoutFn: () => void
+        LogoutFn: () => void,
+        user:any
     }>({
-        isLoggedIn: false,
         LoginFn: (values: any) => { },
-        LogoutFn: () => { }
+        LogoutFn: () => { },
+        user:{}
     });
 
 export default function AuthContextProvider({ children }: { children: React.ReactNode }) {
     const router = useRouter();
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+    const [user, setUser] = useState<USER_TYPE>()
     const path = usePathname()
-    const cookie = getClientCookie()
 
-    const authCheck = async () => {
+    const redirect = () => {
+        if (path.includes('/login')) {
+            router.push('/')
+        }
+        else {
+            router.push(path)
+        }
+    }
+
+
+
+    const getUser = async () => {
         try {
-            if (cookie) {
-                setIsLoggedIn(true)
-                if (path.includes('/login')) {
-                    router.push('/')
-                }
-                else {
-                    router.push(path)
-                }
+            const response = await getUserService()
+            if (response?.result) {
+                setUser(response?.result)
+                redirect();
+            }
+            else {
+                router.push('/login')
             }
         } catch (error) {
-            setIsLoggedIn(false)
             router.push('/login')
         }
     }
 
 
-
     const LoginFn = async (values: any) => {
         try {
-            const response = await Login(values)
+            const response = await LoginService(values)
             if (response) {
                 MessageAntd.success(MessageService(response));
-                setIsLoggedIn(true)
-                router.push('/')
             }
 
         } catch (error: any) {
-            setIsLoggedIn(false)
             MessageAntd.error(MessageService(error))
+        }
+        finally {
+            getUser()
         }
     }
 
     const LogoutFn = async () => {
         try {
-            const response = await Logout()
+            const response = await LogoutService()
             MessageAntd.success(MessageService(response));
-            setIsLoggedIn(false)
             router.push('/login')
 
         } catch (error: any) {
@@ -72,14 +78,18 @@ export default function AuthContextProvider({ children }: { children: React.Reac
 
 
     useEffect(() => {
-        authCheck()
+        if(!path.includes('/login')){
+        getUser()
+        }
     }, [])
 
 
     return (
-        <authContext.Provider value={{ isLoggedIn, LoginFn, LogoutFn }}>
-            {children}
-        </authContext.Provider>
+        <>
+            <authContext.Provider value={{LoginFn, LogoutFn,user }}>
+                {children}
+            </authContext.Provider>
+        </>
     )
 }
 

@@ -9,7 +9,7 @@ export const AddImageService = async (formData: any) => {
         body: formData,
         credentials: 'include'
     })
-    const result  = await ResponseHandler(response)
+    const result = await ResponseHandler(response)
     return result
 }
 
@@ -18,14 +18,12 @@ export const GetImageService = async (
         applicationKey,
         categoryKey,
         searchText,
-        cookie
     }
         :
         {
             applicationKey?: string,
             categoryKey?: string,
             searchText?: string,
-            cookie?:string
         }
 ) => {
     let query = new URLSearchParams();
@@ -34,16 +32,16 @@ export const GetImageService = async (
     categoryKey && query.append('categoryKey', categoryKey)
     searchText && query.append('searchText', searchText)
 
-    const response = await fetch(`${URL}/image?` + query, { method: 'GET',credentials: 'include',headers:{cookie : cookie ? cookie:''} })
-    const result  = await ResponseHandler(response)
+    const response = await fetch(`${URL}/image?` + query, { method: 'GET', credentials: 'include' })
+    const result = await ResponseHandler(response)
     return result
 }
 
 
-export const DeleteImageService = async (id:string) => {
+export const DeleteImageService = async (id: string) => {
 
-    const response = await fetch(`${URL}/image/${id}`,{ method: 'DELETE',credentials: 'include' })
-    const result  = await ResponseHandler(response)
+    const response = await fetch(`${URL}/image/${id}`, { method: 'DELETE', credentials: 'include' })
+    const result = await ResponseHandler(response)
     return result
 }
 

@@ -1,25 +1,45 @@
-import Sidebar from '@/components/UIComponents/Sidebar'
+'use client'
+import Loader from '@/components/UIComponents/Loader';
+import Sidebar from '@/components/UIComponents/Sidebar';
 import Topbar from '@/components/UIComponents/Topbar';
-import { GetApplicationsService } from '@/service/ApplicationService';
-import { APPLICATION_TYPE } from '@/types/type.application';
-import { getServerCookie } from '@/util/ServerCookie';
-import React from 'react'
+import ApplicationContextProvider from '@/context/AppCtx';
+import { authCtx } from '@/context/AuthCtx';
+import React, { useState } from 'react'
 export const dynamic = "force-dynamic";
 
-export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-        const cookie = getServerCookie()
-        const applicationResponse = await GetApplicationsService(cookie)
-        const applications: APPLICATION_TYPE[] = await applicationResponse?.result;
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
 
-        return (
-            <div className='bg-slate-100 flex'>
-                <Sidebar applications={applications} />
-                <div className='w-full bg-slate-100 max-h-screen overflow-y-auto'>
-                    <Topbar />
-                    {children}
-                </div>
-            </div>
+    const [open, setOpen] = useState<boolean>(false);
+    const { user } = authCtx()
 
-        )
-    
+    return (
+        <>
+            {
+                user ?
+                    <ApplicationContextProvider>
+                        <div className='w-full bg-slate-200 min-h-screen'>
+                            
+                            <div className='sticky top-0 z-50'>
+                                <Topbar open={open} setOpen={setOpen} user={user} />
+                            </div>
+
+                            <div className='flex'>
+                                <div className={` duration-300 w-[0%] ${open && 'w-[50%] md:w-[15%]'} overflow-hidden z-40`}>
+                                    <Sidebar />
+                                </div>
+                                <div className={`duration-300 w-[100%] ${open && 'w-[50%] md:w-[85%]'}`}>
+                                    {children}
+                                </div>
+                            </div>
+
+                        </div>
+                    </ApplicationContextProvider>
+                    :
+                    <div>
+                        <Loader />
+                    </div>
+            }
+        </>
+    )
+
 }

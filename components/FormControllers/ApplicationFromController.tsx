@@ -4,20 +4,20 @@ import React, { useRef, useState } from 'react'
 import { ButtonAntd, FormAntd, MessageAntd } from '../Antd'
 import ApplicationFormFields from '../FormFields/ApplicationFormFields';
 import { AddApplicationService, UpdateApplicationService } from '@/service/ApplicationService';
-import { useRouter } from 'next/navigation';
 import Spinner from '../UIComponents/Spinner';
 import { MessageService } from '@/util/MessageService';
 import { APPLICATION_TYPE } from '@/types/type.application';
-import {RiAlertFill} from 'react-icons/ri'
-import { getClientCookie } from '@/util/ClientCookie';
+import { RiAlertFill } from 'react-icons/ri'
+import { applicationCtx } from '@/context/AppCtx';
 
 
 export default function ApplicationFromController({ application }: { application?: APPLICATION_TYPE }) {
 
+
+  const { getApplications } = applicationCtx();
+
   const formRef = useRef<FormInstance>(null);
-  const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false)
-  const cookie  = getClientCookie()
 
   const addOrUpdateAppkucation = async (values: any) => {
     setLoading(true)
@@ -30,9 +30,10 @@ export default function ApplicationFromController({ application }: { application
         response = await AddApplicationService(values)
       }
       MessageAntd.success(MessageService(response))
-      router.refresh();
-      router.push('/');
-    } catch (error: any) {
+      getApplications()
+      formRef.current?.resetFields();
+    }
+    catch (error: any) {
       MessageAntd.success(MessageService(error))
 
     }
@@ -52,14 +53,14 @@ export default function ApplicationFromController({ application }: { application
     <div>
       {
         application &&
-        <div className='text-rose-500 flex items-center gap-1 text-sm mb-6 font-semibold'>
-           <RiAlertFill className='animate-bounce text-lg'/>
-           <span>{`Don't change the extiting category name it will change the key , which will break image fetch for that perticular category.`}</span>
+        <div className='text-rose-500 flex  gap-1 text-sm mb-6 font-semibold'>
+          <RiAlertFill className='text-lg' />
+          <span>{`Don't change the extiting category name, it will change the key which will break image fetch for that perticular category.`}</span>
         </div>
 
       }
       <div>
-     
+
       </div>
       <FormAntd ref={formRef} layout='vertical' onFinish={submit} initialValues={application}>
         <ApplicationFormFields form={formRef} />

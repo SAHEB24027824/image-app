@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { ModalAntd } from './Antd'
+import { ModalAntd } from '../Antd'
 
 export default function Modal(
     {open,close,children,title}:

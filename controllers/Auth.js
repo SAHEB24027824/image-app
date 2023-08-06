@@ -13,7 +13,15 @@ const signUp = async (req, res) => {
         if (!user) return res.status(400).send({ success: false, message: 'Unable to create user' })
 
         let token = await jwt.sign({ id: user._id, name: user.name, email: user.email }, process.env.JWT_SECRET);
-        res.cookie(process.env.NEXT_PUBLIC_AUTH_COOKIE_NAME, token,{domain:process.env.AUTH_DOMAIN});
+        res.cookie(
+            process.env.NEXT_PUBLIC_AUTH_COOKIE_NAME,
+            token,
+            {
+                sameSite: 'strict',
+                path:'/',
+                httpOnly:true
+            }
+        );
         res.status(200).send({ success: true, message: 'User Updated' })
 
     } catch (error) {
@@ -34,8 +42,15 @@ const login = async (req, res) => {
         if (!isSamePassword) return res.status(400).send({ success: false, message: 'Invalid email or password' })
 
         let token = await jwt.sign({ id: user._id, name: user.name, email: user.email }, process.env.JWT_SECRET);
-
-        res.cookie(process.env.NEXT_PUBLIC_AUTH_COOKIE_NAME, token,{domain:process.env.AUTH_DOMAIN});
+        res.cookie(
+            process.env.NEXT_PUBLIC_AUTH_COOKIE_NAME,
+            token,
+            {
+                sameSite: 'strict',
+                path:'/',
+                httpOnly:true
+            }
+        );
         res.status(200).send({ success: true, message: 'Successfully logged in' })
 
     } catch (error) {
@@ -54,8 +69,20 @@ const logout = async (req, res) => {
     }
 }
 
+const getUser = async (req, res) => {
+    try {
+        const user = await User.findOne({ _id: req.userID },{name:1,email:1});
+        if (user) return res.status(200).send({ success: true, message: 'User Found',result:user })
+        return res.status(400).send({ success: false, message: 'User Not Found' })
+    } catch (error) {
+        return res.status(500).send({ success: false, message: error.message });
+
+    }
+}
+
 module.exports={
     signUp:signUp,
     login:login,
-    logout:logout
+    logout:logout,
+    getUser:getUser
 }

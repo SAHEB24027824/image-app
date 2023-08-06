@@ -14,7 +14,6 @@ export default function Error({
     // Log the error to an error reporting service
   }, [error])
  
-  console.log(error)
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
     <div className="p-10 bg-white rounded-lg shadow-xl">

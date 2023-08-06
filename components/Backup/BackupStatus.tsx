@@ -29,7 +29,6 @@ export default function BackupStatus() {
         setApplications(applicationResponse?.result)
       }
     } catch (error) {
-      console.log(error);
       setImages([]);
       setApplications([]);
     }
@@ -71,7 +70,6 @@ export default function BackupStatus() {
       }
 
     } catch (error: any) {
-      console.log(error)
       MessageAntd.error(MessageService(error))
     }
     finally {
@@ -93,7 +91,6 @@ export default function BackupStatus() {
       downloadZip(collectionZipFile, 'dbCollection.zip')
 
     } catch (error: any) {
-      console.log(error)
       MessageAntd.error(MessageService(error))
     }
     finally {

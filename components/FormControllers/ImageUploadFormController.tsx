@@ -6,20 +6,18 @@ import { AiFillCloseCircle } from 'react-icons/ai';
 import { ButtonAntd, FormAntd, MessageAntd } from '../Antd';
 import { AddImageService } from '@/service/ImageService';
 import { MessageService } from '@/util/MessageService';
-import { useRouter } from 'next/navigation';
 import Spinner from '../UIComponents/Spinner';
 import {BsFillBookmarkCheckFill} from 'react-icons/bs'
 
 export default function ImageUploadFormController(
-  { params, modalClose }:
-  { params: { params: string[] }, modalClose: React.Dispatch<React.SetStateAction<boolean>>, }) {
+  { params, modalClose ,getImages}:
+  { params: { params: string[] }, modalClose: React.Dispatch<React.SetStateAction<boolean>>, getImages:any}) {
 
   const applicationKey = params?.params[0]
   const categoryKey = params?.params[1]
   const [imageFile, setImageFile] = useState<File[]>([]);
   const [imageUrls, setImageUrls] = useState<any[]>([]);
   const [loading, setLoading] = useState(false)
-  const router = useRouter()
   const initialValues={width:400,height:400,quality:50,resizeOption:'fill'};
   const [form] = FormAntd.useForm();
 
@@ -103,8 +101,8 @@ export default function ImageUploadFormController(
       setImageFile([])
       setImageUrls([])
       modalClose(false)
-      router.refresh();
       form.resetFields()
+      getImages();
     } catch (error: any) {
       MessageAntd.error(MessageService(error))
     }

@@ -1,5 +1,5 @@
 const { AddApplication, GetApplications, UpdateApplication , GetApplication } = require('../controllers/ApplicationController');
-const { signUp, login, logout } = require('../controllers/Auth');
+const { signUp, login, logout, getUser } = require('../controllers/Auth');
 const { AddImages, getImages, deleteImage } = require('../controllers/ImageController');
 const { AuthCheck } = require('../middleware/Auth');
 const upload = require('../util/MulterStorage');
@@ -19,6 +19,7 @@ router.delete('/image/:id',[AuthCheck],deleteImage)
 router.post('/signup',signUp);
 router.post('/login',login);
 router.get('/logout',[AuthCheck],logout);
+router.get('/user',[AuthCheck],getUser)
 
 
 
