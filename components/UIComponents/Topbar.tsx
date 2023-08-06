@@ -2,7 +2,7 @@ import { authCtx } from '@/context/AuthCtx'
 import { USER_TYPE } from '@/types/type.user'
 import Link from 'next/link'
 import React from 'react'
-import { AiOutlineLogout, AiOutlineMenuUnfold } from 'react-icons/ai'
+import { AiFillHome, AiOutlineLogout, AiOutlineMenuUnfold } from 'react-icons/ai'
 import { LuDatabaseBackup } from 'react-icons/lu'
 import { PopconfirmAntd } from '../Antd'
 
@@ -11,9 +11,15 @@ export default function Topbar({ open, setOpen, user }: { open?: boolean, setOpe
   return (
     <div className={`w-fill h-14 bg-white shadow-md  border flex items-center px-4 justify-between`}>
 
-      <AiOutlineMenuUnfold className={`text-2xl cursor-pointer ${open && 'rotate-180'}`} onClick={() => setOpen(!open)} />
-
       <div className='flex items-center gap-10'>
+        <AiOutlineMenuUnfold className={`text-2xl cursor-pointer ${open && 'rotate-180'}`} onClick={() => setOpen(!open)} />
+
+        <Link href='/' prefetch={false} className='text-xl flex items-center gap-1 cursor-pointer'>
+          <AiFillHome />
+        </Link>
+      </div>
+
+      <div className='flex items-center gap-4'>
         <Link href='/backup' prefetch={false} className='text-xl flex items-center gap-1 cursor-pointer'>
           <LuDatabaseBackup /> Backup
         </Link>
