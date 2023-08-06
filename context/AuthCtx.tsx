@@ -3,7 +3,7 @@ import { MessageAntd } from '@/components/Antd';
 import { getUserService, LoginService, LogoutService } from '@/service/AuthService';
 import { USER_TYPE } from '@/types/type.user';
 import { MessageService } from '@/util/MessageService';
-import { useRouter, useParams, usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 
@@ -30,7 +30,7 @@ export default function AuthContextProvider({ children }: { children: React.Reac
                 window?.localStorage.setItem('auth', value)
             }
             else {
-                return window?.localStorage.getItem('auth')
+                return window?.localStorage.getItem('auth') ? window?.localStorage.getItem('auth') : 'false'
             }
         }
     }
@@ -92,8 +92,13 @@ export default function AuthContextProvider({ children }: { children: React.Reac
 
 
     useEffect(() => {
-        if (localStorageGetSet() == 'true') {
+        if (!path.includes('/login')) {
             getUser()
+        }
+        if (path.includes('/login')) {
+            if (localStorageGetSet() == 'true') {
+                getUser()
+            }
         }
     }, [])
 
