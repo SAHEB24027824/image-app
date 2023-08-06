@@ -82,7 +82,7 @@ export default function ImageGrid({ params }: { params: { params: string[] } }) 
       
       <div className='mb-16'>
       <InputAntd placeholder='Search image by name, url, width, height ,quality' onChange={(e) => setSearchText(e.target.value)} />
-      <p className='flex items-center gap-1 text-sm mt-2'><Spinner loading={true}/> Loading ...</p>
+     {loading && <p className='flex items-center gap-1 text-sm mt-2'><Spinner loading={loading}/> Loading ...</p>}
       </div>
 
       {

@@ -4,7 +4,7 @@ const nextConfig = {
     NEXT_PUBLIC_APP_API_URL: process.env.NEXT_PUBLIC_APP_API_URL,
   },
     images: {
-        domains:['localhost',]
+        domains:['localhost','imageapp.in']
       },
 }
 

@@ -11,17 +11,29 @@ const authContext = createContext<
     {
         LoginFn: (values: any) => void
         LogoutFn: () => void,
-        user:any
+        user: any
     }>({
         LoginFn: (values: any) => { },
         LogoutFn: () => { },
-        user:{}
+        user: {}
     });
 
 export default function AuthContextProvider({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const [user, setUser] = useState<USER_TYPE>()
     const path = usePathname()
+
+
+    const localStorageGetSet = (value?: string) => {
+        if (typeof window == 'object') {
+            if (value) {
+                window?.localStorage.setItem('auth', value)
+            }
+            else {
+                return window?.localStorage.getItem('auth')
+            }
+        }
+    }
 
     const redirect = () => {
         if (path.includes('/login')) {
@@ -38,6 +50,7 @@ export default function AuthContextProvider({ children }: { children: React.Reac
         try {
             const response = await getUserService()
             if (response?.result) {
+                localStorageGetSet('true')
                 setUser(response?.result)
                 redirect();
             }
@@ -69,6 +82,7 @@ export default function AuthContextProvider({ children }: { children: React.Reac
         try {
             const response = await LogoutService()
             MessageAntd.success(MessageService(response));
+            localStorageGetSet('false')
             router.push('/login')
 
         } catch (error: any) {
@@ -78,15 +92,15 @@ export default function AuthContextProvider({ children }: { children: React.Reac
 
 
     useEffect(() => {
-        if(!path.includes('/login')){
-        getUser()
+        if (localStorageGetSet() == 'true') {
+            getUser()
         }
     }, [])
 
 
     return (
         <>
-            <authContext.Provider value={{LoginFn, LogoutFn,user }}>
+            <authContext.Provider value={{ LoginFn, LogoutFn, user }}>
                 {children}
             </authContext.Provider>
         </>
