@@ -20,8 +20,8 @@ export default function LoginFormController({ }: Props) {
 
 
     return (
-        <div className='absolute top-[50%] bg-white left-[50%] translate-x-[-50%] translate-y-[-50%] w-full md:w-2/5 p-10 rounded-lg min-h-[200px] shadow-lg flex justify-center flex-col items-center'>
-
+        <div className='absolute top-[50%] bg-white left-[50%] translate-x-[-50%] translate-y-[-50%] w-4/5 md:w-2/5 p-10 rounded-lg min-h-[200px] shadow-lg flex justify-center flex-col items-center'>
+            
             <FormAntd className='w-[90%] md:w-2/3 flex flex-col items-center' onFinish={submit}>
 
                 <AiOutlineUser className='text-4xl text-center text-slate-600' />
