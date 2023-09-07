@@ -7,7 +7,7 @@ import { DeleteImageService, GetImageService } from '@/service/ImageService'
 import { AiFillDelete } from 'react-icons/ai'
 import { MessageService } from '@/util/MessageService'
 import ImageUploader from './ImageUploader'
-import Spinner from './Spinner'
+import DataLoader from './DataLoader'
 
 
 
@@ -36,7 +36,10 @@ export default function ImageGrid({ params }: { params: { params: string[] } }) 
       setImages([])
     }
     finally{
-      setLoading(false)
+      setTimeout(()=>{
+        setLoading(false)
+      },1000)
+      
     }
   }
 
@@ -82,7 +85,7 @@ export default function ImageGrid({ params }: { params: { params: string[] } }) 
       
       <div className='mb-16'>
       <InputAntd placeholder='Search image by name, url, width, height ,quality' onChange={(e) => setSearchText(e.target.value)} />
-     {loading && <p className='flex items-center gap-1 text-sm mt-2'><Spinner loading={loading}/> Loading ...</p>}
+      {loading && <DataLoader/>}
       </div>
 
       {

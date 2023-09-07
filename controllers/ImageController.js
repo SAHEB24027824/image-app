@@ -64,7 +64,7 @@ const getImages = async (req, res) => {
             applicationKey && (Object.keys(query).length > 0 ? query = { ...query, applicationKey: applicationKey } : query = { applicationKey: applicationKey })
             categoryKey && (Object.keys(query).length > 0 ? query = { ...query, categoryKey: categoryKey } : query = { categoryKey: categoryKey })
         }
-        const result = await Image.find(query);
+        const result = await Image.find(query,null,{sort:{_id:-1}});
 
         if (result && result.length > 0) return res.status(200).send({ success: true, result, message: 'Images found', query });
         return res.status(200).send({ success: false, message: 'Images not found!' });
