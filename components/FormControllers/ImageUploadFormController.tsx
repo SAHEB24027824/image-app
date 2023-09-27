@@ -34,6 +34,9 @@ export default function ImageUploadFormController(
     })
     setImageUrls(imageObjects)
     setImageFile(selectedFilesArray)
+    if(event?.target?.value){
+    event.target.value=''
+    }
   }
 
 

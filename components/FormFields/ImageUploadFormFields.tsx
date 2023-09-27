@@ -61,7 +61,7 @@ export default function ImageUploadFormFields(
                 <div className='flex gap-2 items-center justify-center cursor-pointer rounded-md shadow-md p-2 bg-blue-500 text-white'>
                     <FaUpload />Upload Image
                 </div>
-                <InputAntd type='file' id='uploader' onChange={onLoadImages} multiple={true} className='opacity-0' />
+                <input type='file' id='uploader' onChange={onLoadImages} multiple={true} className='opacity-0' />
             </label>
     </>
   )

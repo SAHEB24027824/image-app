@@ -80,15 +80,15 @@ export default function ImageGrid({ params }: { params: { params: string[] } }) 
               return (
                 <div key={index} className='border p-2 max-w-[200px] shadow-md rounded-md relative cursor-pointer'>
                   <Image src={`${process.env.NEXT_PUBLIC_APP_URL}${image.url}`}
-                    height={120}
-                    width={120}
+                    height={140}
+                    width={140}
                     alt={image.name}
-                    className='block m-auto h-[120px] w-[120px] object-contain'
+                    className='block m-auto h-[140px] w-[140px] object-contain'
                     onClick={() => copyToClipboard(`${process.env.NEXT_PUBLIC_APP_URL}${image.url}`)}
                   />
-                  <div className='mt-2'>
+                  <div className=''>
                     <div className='text-xs font-semibold p-1'>{image.name}</div>
-                    <div className='flex flex-col gap-1 bg-gray-700 text-white p-2 rounded-md text-[10px]'>
+                    <div className='flex flex-col gap-1 bg-blue-500 text-white p-2 rounded-md text-[10px]'>
                       <p><span className='font-semibold'>Height: </span>{image?.height}</p>
                       <p><span className='font-semibold'>Width: </span>{image?.width}</p>
                       <p><span className='font-semibold'>Quality: </span>{image?.quality}</p>
