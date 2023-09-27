@@ -78,7 +78,7 @@ export default function ImageGrid({ params }: { params: { params: string[] } }) 
           <div className='flex flex-wrap gap-2'>
             {images.map((image, index) => {
               return (
-                <div key={index} className='border p-2 max-w-[200px] shadow-md rounded-md relative'>
+                <div key={index} className='border p-2 max-w-[200px] shadow-md rounded-md relative cursor-pointer'>
                   <Image src={`${process.env.NEXT_PUBLIC_APP_URL}${image.url}`}
                     height={120}
                     width={120}
