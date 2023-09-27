@@ -11,8 +11,8 @@ export default function Card(
         }
 ) {
     return (
-        <div className={`rounded-md bg-white ${className} ${title || extra && 'divide-y'}`}>
-            <div className={`p-4 px-6 flex justify-between`}>
+        <div className={`rounded-md overflow-hidden bg-white ${className} ${title || extra && 'divide-y'}`}>
+            <div className={`p-4 px-6 flex justify-between bg-gray-700 text-white`}>
                 <p className='font-semibold'>{title}</p>
                 <div className='text-sm'>{extra && extra}</div>
             </div>

@@ -19,32 +19,22 @@ export default function ImageGrid({ params }: { params: { params: string[] } }) 
   const [images, setImages] = useState<IMAGE_TYPE[]>([])
   const [searchText, setSearchText] = useState<string>('')
   const [enableDelete, setEnableDelete] = useState<boolean>(false);
-  const [loading,setLoading]=useState<boolean>(false);
-  
-//================== Get all images ===================//
+  const [loading, setLoading] = useState<boolean>(false);
+
+  //================== Get all images ===================//
   const getImages = async () => {
     setLoading(true)
     try {
       const response = await GetImageService({ applicationKey, categoryKey, searchText });
-      if (response?.result) {
-        setImages(response?.result)
-      }
-      else {
-        setImages([])
-      }
-    } catch (error) {
-      setImages([])
+      if (response?.result) { setImages(response?.result) }
+      else { setImages([]) }
     }
-    finally{
-      setTimeout(()=>{
-        setLoading(false)
-      },1000)
-      
-    }
+    catch (error) { setImages([]) }
+    finally { setTimeout(() => { setLoading(false) }, 1000) }
   }
 
 
-//================== Delete images ===================//
+  //================== Delete images ===================//
 
   const deleteImage = async (id: string) => {
     try {
@@ -58,62 +48,53 @@ export default function ImageGrid({ params }: { params: { params: string[] } }) 
     }
   }
 
-//================== Copy To Clipboard ===================//
+  //================== Copy To Clipboard ===================//
 
   const copyToClipboard = (url: string) => {
     navigator.clipboard.writeText(url)
     MessageAntd.success('URL copied to clipboard')
   }
 
-
-
   useEffect(() => {
     getImages();
   }, [searchText])
 
-
-
-
-
   return (
     <div>
-
-      <div className='my-4 flex items-center gap-2 float-right'>
+      {/* =========== Header Area ============= */}
+      <div className='flex items-center gap-2 float-right'>
         <SwitchAntd className='bg-slate-500' onChange={setEnableDelete} />
         <span>Delete Image</span>
       </div>
-      
-      <div className='mb-16'>
-      <InputAntd placeholder='Search image by name, url, width, height ,quality' onChange={(e) => setSearchText(e.target.value)} />
-      {loading && <DataLoader/>}
-      </div>
+      <InputAntd
+        placeholder='Search image by name, url, width, height ,quality'
+        onChange={(e) => setSearchText(e.target.value)}
+        className='mt-6 mb-10 p-4 text-[16px] font-semibold bg-gray-100'
+      />
+      {loading && <DataLoader />}
 
       {
         images && images.length > 0 ?
-          <div className='flex flex-wrap  items-center gap-4 overflow-hidden justify-center md:justify-start w-full md:w-[90%] m-auto'>
+          <div className='flex flex-wrap gap-2'>
             {images.map((image, index) => {
               return (
-                <div key={index} className='shadow-md duration-300 rounded-md hover:shadow-slate-700 relative'>
-
-
+                <div key={index} className='border p-2 max-w-[200px] shadow-md rounded-md relative'>
                   <Image src={`${process.env.NEXT_PUBLIC_APP_URL}${image.url}`}
-                    height={100}
+                    height={120}
                     width={120}
                     alt={image.name}
-                    className='cursor-pointer block m-auto'
+                    className='block m-auto h-[120px] w-[120px] object-contain'
                     onClick={() => copyToClipboard(`${process.env.NEXT_PUBLIC_APP_URL}${image.url}`)}
                   />
-
-
-                  <p className='text-sm text-center py-2'>{image.name}</p>
-
-
-                  <p className='bg-sky-500 text-white text-[10px] p-2 flex flex-wrap justify-center  items-center gap-2'>
-                    <span>H: {image?.height}</span>
-                    <span>W: {image?.width}</span>
-                    <span>Q: {image?.quality}</span>
-                    <span>T: {image?.resizeOption}</span>
-                  </p>
+                  <div className='mt-2'>
+                    <div className='text-xs font-semibold p-1'>{image.name}</div>
+                    <div className='flex flex-col gap-1 bg-gray-700 text-white p-2 rounded-md text-[10px]'>
+                      <p><span className='font-semibold'>Height: </span>{image?.height}</p>
+                      <p><span className='font-semibold'>Width: </span>{image?.width}</p>
+                      <p><span className='font-semibold'>Quality: </span>{image?.quality}</p>
+                      <p><span className='font-semibold'>resizeOption: </span>{image?.resizeOption}</p>
+                    </div>
+                  </div>
 
                   {enableDelete &&
                     <PopconfirmAntd placement="left" title='Delete Image ?' onConfirm={() => deleteImage(image._id)} okButtonProps={{ className: ' bg-black' }}>

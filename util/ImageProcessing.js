@@ -1,34 +1,38 @@
 const path = require('path');
 const fs = require('fs');
 const sharp = require('sharp');
-const url = require('url');
 
-const directory = 'uploads';
-
+const Directory = 'uploads';
+const ImageDirFullPath = path.join(__dirname, '../', Directory);
 
 const ImageProcessing = async (file, id, resize) => {
+
     return new Promise(async (resolve, reject) => {
+
+        let background = { r: 255, g: 255, b: 255, alpha: 0}
+        if(resize.background){
+            background = JSON.parse(resize.background);
+        }
+        const imageName = `${id}.webp`;
+
         if (!file) {
             return reject(new Error('Check request body'));
         }
-        let imageDir = path.join(__dirname, '../', directory);
-
-        fs.access(imageDir, (error) => {
+        fs.access(ImageDirFullPath, (error) => {
             if (error) {
                 return reject(error);
             }
         })
-        let imageName = `${id}.webp`;
         try {
             await sharp(file.buffer)
                 .resize({
                     height: resize && resize?.height ? +resize?.height : 800,
                     width: resize && resize?.width ? +resize?.width : 800,
                     fit: resize.resizeOption,
-                    background: { r: 255, g: 255, b: 255, alpha: 0 }
+                    background: background
                 })
                 .webp({ quality: resize && resize?.quality ? +resize?.quality : 40 })
-                .toFile(`${imageDir}/${imageName}`);
+                .toFile(`${ImageDirFullPath}/${imageName}`);
 
             let url = `/image/${imageName}`
             return resolve(url);
@@ -43,7 +47,7 @@ const UnlinkImage = (imageUrl) => {
     return new Promise((resolve, reject) => {
         const imagePathArray = imageUrl.split('/')
         const imageName = imagePathArray[imagePathArray?.length-1]
-        const image = path.join(__dirname, `../${directory}/${imageName}`);
+        const image = path.join(__dirname, `../${Directory}/${imageName}`);
         fs.unlink(image, function (error) {
             if(error) return reject(false)
             return resolve(true);

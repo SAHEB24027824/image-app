@@ -5,10 +5,10 @@ const AddImages = async (req, res) => {
     let imageArray = [];
     try {
         if (!req.files || !req.body) return res.status(400).send({ success: false, message: 'Please send proper request 1' });
-        const { applicationKey, categoryKey, name, width, height, quality,resizeOption } = req.body;
+        const { applicationKey, categoryKey, name, width, height, quality,resizeOption,background } = req.body;
         for (let file of req.files) {
             let newImage = new Image();
-            const url = await ImageProcessing(file, newImage._id, { width, height, quality , resizeOption });
+            const url = await ImageProcessing(file, newImage._id, { width, height, quality , resizeOption ,background });
             newImage.width = width;
             newImage.height = height;
             newImage.resizeOption=resizeOption,
@@ -17,6 +17,7 @@ const AddImages = async (req, res) => {
             newImage.url = url;
             newImage.applicationKey = applicationKey;
             newImage.categoryKey = categoryKey;
+            newImage.background=background
             imageArray.push(newImage);
         }
         if (imageArray.length > 0) {

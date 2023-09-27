@@ -1,5 +1,5 @@
 'use client'
-import { Popover, Modal ,Form , Input , Button, message , InputNumber, Divider, Popconfirm, FloatButton, Switch, Select, Drawer } from "antd";
+import { Popover, Modal ,Form , Input , Button, message , InputNumber, Divider, Popconfirm, FloatButton, Switch, Select, Drawer, ColorPicker } from "antd";
 
 export const PopoverAntd = Popover;
 export const ModalAntd = Modal;
@@ -14,4 +14,5 @@ export const FloatButtonAntd = FloatButton;
 export const SwitchAntd = Switch;
 export const SelectAntd = Select;
 export const DrawerAntd = Drawer;
+export const ColorPickerAntd = ColorPicker
 

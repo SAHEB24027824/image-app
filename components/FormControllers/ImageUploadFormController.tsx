@@ -1,25 +1,26 @@
 'use client'
 import Image from 'next/image';
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import ImageUploadFormFields from '../FormFields/ImageUploadFormFields';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { ButtonAntd, FormAntd, MessageAntd } from '../Antd';
 import { AddImageService } from '@/service/ImageService';
 import { MessageService } from '@/util/MessageService';
 import Spinner from '../UIComponents/Spinner';
-import {BsFillBookmarkCheckFill} from 'react-icons/bs'
+import { BsFillBookmarkCheckFill } from 'react-icons/bs'
+import { FormInstance } from 'antd';
 
 export default function ImageUploadFormController(
-  { params, modalClose ,getImages}:
-  { params: { params: string[] }, modalClose: React.Dispatch<React.SetStateAction<boolean>>, getImages:any}) {
+  { params, modalClose, getImages }:
+    { params: { params: string[] }, modalClose: React.Dispatch<React.SetStateAction<boolean>>, getImages: any }) {
 
   const applicationKey = params?.params[0]
   const categoryKey = params?.params[1]
   const [imageFile, setImageFile] = useState<File[]>([]);
   const [imageUrls, setImageUrls] = useState<any[]>([]);
   const [loading, setLoading] = useState(false)
-  const initialValues={width:400,height:400,quality:50,resizeOption:'fill'};
-  const [form] = FormAntd.useForm();
+  const initialValues = { width: 800, height: 800, quality: 60, resizeOption: 'contain' };
+  const formRef = useRef<FormInstance>(null);
 
 
 
@@ -33,7 +34,6 @@ export default function ImageUploadFormController(
     })
     setImageUrls(imageObjects)
     setImageFile(selectedFilesArray)
-    event.target.value='';
   }
 
 
@@ -55,33 +55,6 @@ export default function ImageUploadFormController(
 
 
 
-  const loadedImageContainer = () => {
-    return (
-      <div className={`flex flex-wrap  transition-all duration-500 ease-in-out overflow-hidden ${imageUrls.length > 0 ? 'max-h-140 p-2 rounded-md shadow-lg' : 'max-h-0'}`}>
-        {
-          imageUrls.map((image, index) => {
-            return (
-              <div key={index} className='relative m-2'>
-                <Image
-                  src={image.url}
-                  width={80}
-                  height={80}
-                  alt='Loaded Images'
-                />
-                <AiFillCloseCircle
-                  className=' absolute top-0 right-0 cursor-pointer hover:text-red-500'
-                  onClick={() => removeImageFromQueue(image.name)}
-                />
-              </div>
-            )
-          })
-        }
-      </div>
-    )
-  }
-
-
-
   const submit = async (values: any) => {
     setLoading(true)
     try {
@@ -93,6 +66,7 @@ export default function ImageUploadFormController(
       formData.append('height', values?.height as string);
       formData.append('quality', values?.quality as string);
       formData.append('resizeOption', values?.resizeOption as string);
+      values?.background && formData.append('background', values?.background);
       imageFile.forEach(item => {
         formData.append('image', item)
       })
@@ -101,7 +75,7 @@ export default function ImageUploadFormController(
       setImageFile([])
       setImageUrls([])
       modalClose(false)
-      form.resetFields()
+      formRef?.current?.resetFields()
       getImages();
     } catch (error: any) {
       MessageAntd.error(MessageService(error))
@@ -114,26 +88,23 @@ export default function ImageUploadFormController(
 
 
   return (
-    <FormAntd form={form} onFinish={submit} layout='vertical' initialValues={initialValues}>
+    <FormAntd ref={formRef} onFinish={submit} layout='vertical' initialValues={initialValues}>
+      <ImageUploadFormFields onLoadImages={loadImages} form={formRef} />
 
-
-      <div className='my-4 p-2 bg-blue-500 text-white text-xs flex flex-col gap-2'>
-
-        <span className='flex gap-1 items-center'>
-        <BsFillBookmarkCheckFill/><span> Banner , NEWS Resize:Fill, Height:400, Width:800</span>
-        </span>
-        <span className='flex gap-1 items-center'>
-        <BsFillBookmarkCheckFill/><span> Product deals Resize:Contain, Height:400 , Width:400, equal height and width</span>
-        </span>
+      {/* ======================= Preview Images Before Upload ====================== */}
+      <div className='flex flex-wrap gap-2 p-2 items-center my-8'>
+        {imageUrls && imageUrls?.map((image: { url: string, name: string }, index: number) => {
+          return (
+            <div key={index} className='relative'>
+              <Image src={image?.url} height={60} width={60} alt='upload' className='border w-[60px] h-[60px] object-contain' />
+              <AiFillCloseCircle className='text-red-500 absolute top-0 right-0 cursor-pointer' onClick={() => removeImageFromQueue(image.name)} />
+            </div>
+          )
+        })}
       </div>
 
-
-      <ImageUploadFormFields onLoadImages={loadImages} />
-      <div className='mt-4'>
-        {loadedImageContainer()}
-      </div>
-      <ButtonAntd htmlType='submit' disabled={imageUrls.length < 1} block type='primary' 
-      className='bg-blue-600 mt-4 flex items-center justify-center gap-2'>
+      <ButtonAntd htmlType='submit' disabled={imageUrls.length < 1} block type='primary'
+        className='bg-blue-600 mt-4 flex items-center justify-center gap-2 p-2'>
         <Spinner loading={loading} /> Upload</ButtonAntd>
     </FormAntd>
   )
